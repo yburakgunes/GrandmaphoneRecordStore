@@ -67,7 +67,7 @@ public class DVDEntity implements IAlbumUtils {
 	
 
 	@Override
-	public double discPrice() {
+	public double calcDiscount() {
 		double discPrice;
 		double price = this.getPrice();
 		double disc = this.getDiscount();

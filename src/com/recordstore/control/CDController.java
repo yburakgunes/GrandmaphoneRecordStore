@@ -80,6 +80,7 @@ public class CDController implements IDatabaseCrud<CDEntity>, Serializable {
 				findEntity.setGenre(entity.getGenre());
 				findEntity.setType(entity.getType());
 				findEntity.setPrice(entity.getPrice());
+				findEntity.setDiscPrice(entity.calcDiscount());
 				Session session = databaseConnectionHibernate();
 				session.getTransaction().begin();
 				session.merge(findEntity);

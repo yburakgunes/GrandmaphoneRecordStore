@@ -6,5 +6,6 @@ public class RecordStoreMain {
 	public static void main(String[] args) {
 		LoginMainTest main = new LoginMainTest();
 		main.showMainMenu();
+		
 	}
 }

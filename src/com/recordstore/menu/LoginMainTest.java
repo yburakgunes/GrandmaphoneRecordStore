@@ -152,6 +152,7 @@ public class LoginMainTest {
 		artist.setBio(sc.nextLine());
 		ArtistController artController = new ArtistController();
 		artController.create(artist);
+		showAdminPage();
 	}
 	
 	private static void addVinyl(Scanner sc) {
@@ -171,6 +172,7 @@ public class LoginMainTest {
 		System.out.println("DVD and Artist are created");
 		VinylController vincontroller = new VinylController();
 		vincontroller.create(vinyl);
+		showAdminPage();
 	}
 	
 	private static ArtistEntity newArtistVinyl(VinylEntity vinyl) {
@@ -186,6 +188,7 @@ public class LoginMainTest {
 		controller.create(artist);
 		sc.close();
 		return artist;
+		
 	}
 	
 	private static void vinylGetSize() {
@@ -275,6 +278,7 @@ public class LoginMainTest {
 		System.out.println("DVD and Artist are created");
 		DVDController dvdController = new DVDController();
 		dvdController.create(dvd);
+		showAdminPage();
 	}
 	
 	private static void addCD(Scanner sc) {
@@ -294,6 +298,7 @@ public class LoginMainTest {
 		System.out.println("CD and Artist are created");
 		CDController cdController = new CDController();
 		cdController.create(cd);
+		showAdminPage();
 	}
 	
 	private static ArtistEntity newArtistCd(DVDEntity dvd) {
@@ -397,7 +402,7 @@ public class LoginMainTest {
 		return artist;
 	}
 	
-	private static CDTypes cdGetType() {
+	private static void cdGetType() {
 		CDEntity cd = new CDEntity();
 		System.out.println("Please choose a type");
 		System.out.println("1-)CD" + "\n2-)CDR" + "\n3-)CDRW");
@@ -424,7 +429,6 @@ public class LoginMainTest {
 					break;
 			}
 		}
-		return null;
 	}
 	
 	private static Genre cdGenreChoice() {
@@ -506,7 +510,7 @@ public class LoginMainTest {
 	private static void artistDelete(Scanner sc) {
 		System.out.println("Please choose the ID number you want to delete");
 		
-		int choice = sc.nextInt();
+		long choice = sc.nextLong();
 		ArtistEntity artistEntity = new ArtistEntity();
 		ArtistController artistController = new ArtistController();
 		
@@ -518,6 +522,7 @@ public class LoginMainTest {
 		artistController.delete(artistEntity);
 		
 		System.out.println("Artist is deleted");
+		showAdminPage();
 	}
 	
 	private static void artistList() {
@@ -535,7 +540,7 @@ public class LoginMainTest {
 	private static void vinylDelete(Scanner sc) {
 		System.out.println("Please choose the ID number you want to delete");
 		
-		int choice = sc.nextInt();
+		long choice = sc.nextLong();
 		VinylEntity vinylEntity = new VinylEntity();
 		VinylController vinController = new VinylController();
 		
@@ -547,6 +552,7 @@ public class LoginMainTest {
 		vinController.delete(vinylEntity);
 		
 		System.out.println("Vinyl is deleted");
+		showAdminPage();
 	}
 	
 	private static void vinylList() {
@@ -562,9 +568,10 @@ public class LoginMainTest {
 	}
 	
 	private static void dvdDelete(Scanner sc) {
+		
 		System.out.println("Please choose the ID number you want to delete");
 		
-		int choice = sc.nextInt();
+		long choice = sc.nextLong();
 		DVDEntity dvdEntity = new DVDEntity();
 		DVDController dvdController = new DVDController();
 		
@@ -576,6 +583,7 @@ public class LoginMainTest {
 		dvdController.delete(dvdEntity);
 		
 		System.out.println("DVD is deleted");
+		showAdminPage();
 	}
 	
 	private static void dvdList() {
@@ -593,7 +601,7 @@ public class LoginMainTest {
 	private static void cdDelete(Scanner sc) {
 		System.out.println("Please choose the ID number you want to delete");
 		
-		int choice = sc.nextInt();
+		long choice = sc.nextLong();
 		CDEntity cdEntity = new CDEntity();
 		CDController cdController = new CDController();
 		
@@ -604,6 +612,7 @@ public class LoginMainTest {
 		cdEntity = typedQuery.getSingleResult();
 		cdController.delete(cdEntity);
 		System.out.println("CD is deleted");
+		showAdminPage();
 	}
 	
 	private static void cdList() {
@@ -647,7 +656,6 @@ public class LoginMainTest {
 			case 4:
 				
 				artistList();
-				
 				updateArtist(sc);
 				
 				break;
@@ -658,7 +666,7 @@ public class LoginMainTest {
 	private static void updateArtist(Scanner sc) {
 		System.out.println("Please choose the ID number you want to delete");
 		
-		int choice = sc.nextInt();
+		long choice = sc.nextLong();
 		ArtistEntity artistEntity = new ArtistEntity();
 		ArtistController artistController = new ArtistController();
 		
@@ -672,12 +680,14 @@ public class LoginMainTest {
 		System.out.println("Please enter bio");
 		artistEntity.setBio(sc.nextLine());
 		artistController.update(artistEntity);
+		System.out.println("New artist is created!");
+		showAdminPage();
 	}
 	
 	private static void vinylUpdate(Scanner sc) {
 		System.out.println("Please choose the ID number you want to delete");
 		
-		int choice = sc.nextInt();
+		long choice = sc.nextLong();
 		VinylEntity vinylEntity = new VinylEntity();
 		VinylController vinController = new VinylController();
 		
@@ -692,17 +702,18 @@ public class LoginMainTest {
 		vinylEntity.setPrice(sc.nextDouble());
 		System.out.println("Please enter discount percentage");
 		vinylEntity.setDiscount(sc.nextDouble());
-		System.out.println("Please choose genre");
+		vinylEntity.setDiscPrice(vinylEntity.calcDiscount());
 		vinylGenreChoice();
-		System.out.println("Please choose resolution");
 		vinylGetSize();
 		vinController.update(vinylEntity);
+		System.out.println("Update is completed!");
+		showAdminPage();
 	}
 	
 	private static void dvdUpdate(Scanner sc) {
 		System.out.println("Please choose the ID number you want to update");
 		
-		int choice = sc.nextInt();
+		long choice = sc.nextLong();
 		DVDEntity dvdEntity = new DVDEntity();
 		DVDController dvdController = new DVDController();
 		
@@ -713,36 +724,44 @@ public class LoginMainTest {
 		dvdEntity = typedQuery.getSingleResult();
 		System.out.println("Please enter new name");
 		dvdEntity.setName(sc.nextLine());
-		System.out.println("Please choose new genre");
 		dvdGenreChoice();
-		System.out.println("Please choose new resolution");
 		dvdGetResolution();
+		System.out.println("Please enter new Price");
 		dvdEntity.setPrice(sc.nextDouble());
+		System.out.println("Please enter new Discount");
 		dvdEntity.setDiscount(sc.nextDouble());
+		dvdEntity.setDiscPrice(dvdEntity.calcDiscount());
 		dvdController.update(dvdEntity);
+		System.out.println("Update is completed!");
+		showAdminPage();
+		
 	}
 	
 	private static void cdUpdate(Scanner sc) {
 		System.out.println("Please choose the ID number you want to update");
 		
-		int choice = sc.nextInt();
+		long choice = sc.nextLong();
 		CDEntity cdEntity = new CDEntity();
 		CDController cdController = new CDController();
 		
 		Session session = HibernateUtils.getSessionfactory().openSession();
-		TypedQuery<CDEntity> typedQuery = session.createQuery("select cd from CDEntity as cd where dvd.id =:key",
+		TypedQuery<CDEntity> typedQuery = session.createQuery("select cd from CDEntity as cd where cd.id =:key",
 				CDEntity.class);
 		typedQuery.setParameter("key", choice);
 		cdEntity = typedQuery.getSingleResult();
 		System.out.println("Please enter new name");
+		sc.nextLine();
 		cdEntity.setName(sc.nextLine());
-		System.out.println("Please choose new genre");
 		cdGenreChoice();
-		System.out.println("Please choose new type");
 		cdGetType();
+		System.out.println("Please enter new Price");
 		cdEntity.setPrice(sc.nextDouble());
+		System.out.println("Please enter new Discount");
 		cdEntity.setDiscount(sc.nextDouble());
+		cdEntity.setDiscPrice(cdEntity.calcDiscount());
 		cdController.update(cdEntity);
+		System.out.println("Update is completed!");
+		showAdminPage();
 	}
 	
 	private static void showOrderList() {
@@ -812,7 +831,7 @@ public class LoginMainTest {
 	
 	private static void albumsByArtists(Scanner sc) {
 		System.out.println("Please choose album types");
-		System.out.println("1-) CD" + "\n2-)DVD" + "\n3-)Vinyl");
+		System.out.println("1-)CD" + "\n2-)DVD" + "\n3-)Vinyl");
 		int choice = sc.nextInt();
 		sc.nextLine();
 		switch (choice) {
@@ -864,7 +883,7 @@ public class LoginMainTest {
 	private static void albumsByGenres(Scanner sc) {
 		{
 			System.out.println("Please choose album types");
-			System.out.println("1-) CD" + "\n2-)DVD" + "\n3-)Vinyl");
+			System.out.println("1-)CD" + "\n2-)DVD" + "\n3-)Vinyl");
 			int choice = sc.nextInt();
 			sc.nextLine();
 			switch (choice) {
@@ -884,7 +903,7 @@ public class LoginMainTest {
 	
 	private static void vinylByGenres() {
 		Session session = HibernateUtils.getSessionfactory().openSession();
-		String hql = "select vin.genre from VinylEntity as vin";
+		String hql = "select vin from VinylEntity as vin where vin.genre=:key";
 		TypedQuery<VinylEntity> typedQuery = session.createQuery(hql, VinylEntity.class);
 		ArrayList<VinylEntity> vinylEntities = (ArrayList<VinylEntity>) typedQuery.getResultList();
 		
@@ -917,7 +936,7 @@ public class LoginMainTest {
 	
 	private static void discountedAlbums(Scanner sc) {
 		System.out.println("Please choose album types");
-		System.out.println("1-) CD" + "\n2-)DVD" + "\n3-)Vinyl");
+		System.out.println("1-)CD" + "\n2-)DVD" + "\n3-)Vinyl");
 		int choice = sc.nextInt();
 		sc.nextLine();
 		switch (choice) {
@@ -935,7 +954,7 @@ public class LoginMainTest {
 	
 	private static void discountedVinyls() {
 		Session session = HibernateUtils.getSessionfactory().openSession();
-		String hql = "select dvd from DVDEntity as dvd where dvd.discPrice is not null";
+		String hql = "select vin from VinylEntity as vin where vin.discPrice is not null";
 		TypedQuery<VinylEntity> typedQuery = session.createQuery(hql, VinylEntity.class);
 		typedQuery.setMaxResults(15);
 		ArrayList<VinylEntity> vinylEntities = (ArrayList<VinylEntity>) typedQuery.getResultList();
@@ -943,6 +962,7 @@ public class LoginMainTest {
 		for (VinylEntity temp : vinylEntities) {
 			System.out.println(temp);
 		}
+		showUserPage();
 	}
 	
 	private static void discountedDVDs() {
@@ -955,6 +975,7 @@ public class LoginMainTest {
 		for (DVDEntity temp : dvdEntities) {
 			System.out.println(temp);
 		}
+		showUserPage();
 	}
 	
 	private static void discountedCDs() {
@@ -967,11 +988,12 @@ public class LoginMainTest {
 		for (CDEntity temp : cdEntities) {
 			System.out.println(temp);
 		}
+		showUserPage();
 	}
 	
 	private static void latestTen(Scanner sc) {
 		System.out.println("Please choose album types");
-		System.out.println("1-) CD" + "\n2-)DVD" + "\n3-)Vinyl");
+		System.out.println("1-)CD" + "\n2-)DVD" + "\n3-)Vinyl");
 		int choice = sc.nextInt();
 		sc.nextLine();
 		switch (choice) {
@@ -996,6 +1018,7 @@ public class LoginMainTest {
 		for (VinylEntity temp : vinylEntities) {
 			System.out.println(temp);
 		}
+		 showUserPage();
 	}
 	
 	private static void getTenDVDs() {
@@ -1007,6 +1030,7 @@ public class LoginMainTest {
 		for (DVDEntity temp : dvdEntities) {
 			System.out.println(temp);
 		}
+		showUserPage();
 	}
 	
 	private static void getTenCDs() {
@@ -1018,5 +1042,6 @@ public class LoginMainTest {
 		for (CDEntity temp : cdEntities) {
 			System.out.println(temp);
 		}
+		showUserPage();
 	}
 }
